@@ -1,538 +1,644 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokemon Pixel Art Guessing Game - All 1025 Pokemon</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .game-container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .game-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            color: #666;
-        }
-
-        .pokemon-display {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pokemon-image {
-            max-width: 200px;
-            max-height: 200px;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: filter 0.3s ease;
-        }
-
-        .difficulty-controls {
-            margin-bottom: 20px;
-        }
-
-        .difficulty-slider {
-            width: 100%;
-            max-width: 300px;
-            margin: 10px auto;
-            display: block;
-        }
-
-        .difficulty-labels {
-            display: flex;
-            justify-content: space-between;
-            max-width: 300px;
-            margin: 0 auto;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .input-section {
-            margin-bottom: 20px;
-        }
-
-        .pokemon-input {
-            width: 100%;
-            max-width: 300px;
-            padding: 12px 20px;
-            font-size: 1.1em;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .pokemon-input:focus {
-            border-color: #667eea;
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            margin-left: 10px;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .feedback.correct {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .feedback.incorrect {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .feedback.hint {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .control-btn:hover {
-            background: #5a6268;
-        }
-
-        .hint-text {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .game-container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            .pokemon-image {
-                max-width: 150px;
-                max-height: 150px;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Pokémon Color-by-Number (1–1025)</title>
+  <style>
+    :root { font-family: -apple-system, system-ui, Segoe UI, Roboto, Arial; }
+    body { margin: 0; background: #0b0c10; color: #e8e8e8; }
+    header { padding: 14px 14px 10px; position: sticky; top: 0; background: rgba(11,12,16,.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); z-index: 5; }
+    h1 { font-size: 16px; margin: 0 0 8px; letter-spacing: .2px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .pill { border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: 6px 10px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,.04); }
+    .pill strong { font-size: 13px; }
+    .pill span { font-size: 12px; opacity: .85; }
+    button {
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:active { transform: translateY(1px); }
+    button[disabled] { opacity: .5; cursor: not-allowed; }
+    main { padding: 12px 12px 90px; }
+    .panel { border: 1px solid rgba(255,255,255,.10); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.03); }
+    .panel .top { padding: 12px; border-bottom: 1px solid rgba(255,255,255,.08); display: grid; gap: 10px; }
+    .grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
+    .label { font-size: 12px; opacity: .85; }
+    input[type="range"] { width: 100%; }
+    .canvasWrap { padding: 10px; display: grid; place-items: center; }
+    canvas { width: min(92vw, 520px); height: min(92vw, 520px); border-radius: 12px; background: #111318; touch-action: none; }
+    .bottomBar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(11,12,16,.92); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 10px 12px;
+      display: grid; gap: 10px;
+    }
+    .palette { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .swatch {
+      min-width: 56px; border-radius: 12px;
+      border: 2px solid transparent;
+      padding: 8px 8px 6px;
+      background: rgba(255,255,255,.06);
+      display: grid; gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .swatch.selected { border-color: rgba(255,255,255,.75); }
+    .chip { width: 100%; height: 16px; border-radius: 8px; border: 1px solid rgba(0,0,0,.25); }
+    .num { font-weight: 800; font-size: 14px; }
+    .count { font-size: 11px; opacity: .8; }
+    .progress { font-size: 12px; opacity: .9; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .toast {
+      position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,.72);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      display: none;
+      z-index: 10;
+    }
+    .small { font-size: 12px; opacity: .75; line-height: 1.35; }
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+    }
+    option { color: #000; }
+  </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>🎮 Pokemon Pixel Art Quiz 🎮</h1>
-        
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        
-        <div class="game-info">
-            <span>Pokemon: <span id="currentNumber">1</span>/1025</span>
-            <span>Score: <span id="score">0</span></span>
-            <span>Streak: <span id="streak">0</span></span>
-        </div>
-        
-        <div class="difficulty-controls">
-            <label for="difficultySlider">Difficulty Level:</label>
-            <input type="range" id="difficultySlider" class="difficulty-slider" min="1" max="10" value="5">
-            <div class="difficulty-labels">
-                <span>Easy</span>
-                <span>Hard</span>
-            </div>
-        </div>
-        
-        <div class="pokemon-display">
-            <img id="pokemonImage" class="pokemon-image" src="" alt="Pokemon">
-            <div class="hint-text" id="hintText"></div>
-        </div>
-        
-        <div class="input-section">
-            <input type="text" id="pokemonInput" class="pokemon-input" placeholder="Enter Pokemon name..." autocomplete="off">
-            <button id="submitBtn" class="submit-btn">Submit</button>
-        </div>
-        
-        <div class="feedback" id="feedback"></div>
-        
-        <div class="controls">
-            <button class="control-btn" id="skipBtn">Skip</button>
-            <button class="control-btn" id="hintBtn">Get Hint</button>
-            <button class="control-btn" id="resetBtn">Reset Game</button>
-        </div>
+  <header>
+    <h1>Pokémon Color-by-Number (001–1025)</h1>
+    <div class="row">
+      <div class="pill"><strong id="pokeTitle">Loading…</strong><span id="pokeMeta"></span></div>
+      <div class="pill"><strong>Unlocked</strong><span id="unlockMeta">…</span></div>
+      <button id="btnPrev">◀︎ Prev</button>
+      <button id="btnNext">Next ▶︎</button>
+      <button id="btnReset" title="Reset current puzzle">Reset puzzle</button>
     </div>
+  </header>
 
-    <script>
-        // Pokemon data - all 1025 Pokemon from Bulbasaur to Pecharunt
-        const pokemonData = [
-            "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise",
-            "Caterpie", "Metapod", "Butterfree", "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata", "Raticate",
-            "Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina", "Nidoqueen",
-            "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff", "Zubat",
-            "Golbat", "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat", "Venomoth", "Diglett", "Dugtrio", "Meowth",
-            "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag", "Poliwhirl", "Poliwrath",
-            "Abra", "Kadabra", "Alakazam", "Machop", "Machoke", "Machamp", "Bellsprout", "Weepinbell", "Victreebel", "Tentacool",
-            "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke", "Slowbro", "Magnemite", "Magneton",
-            "Farfetch'd", "Doduo", "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder", "Cloyster", "Gastly", "Haunter",
-            "Gengar", "Onix", "Drowzee", "Hypno", "Krabby", "Kingler", "Voltorb", "Electrode", "Exeggcute", "Exeggutor", "Cubone",
-            "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung", "Koffing", "Weezing", "Rhyhorn", "Rhydon", "Chansey", "Tangela",
-            "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu", "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz",
-            "Magmar", "Pinsir", "Tauros", "Magikarp", "Gyarados", "Lapras", "Ditto", "Eevee", "Vaporeon", "Jolteon", "Flareon",
-            "Porygon", "Omanyte", "Omastar", "Kabuto", "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres",
-            "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew",
-            
-            // Generation 2 (152-251)
-            "Chikorita", "Bayleef", "Meganium", "Cyndaquil", "Quilava", "Typhlosion", "Totodile", "Croconaw", "Feraligatr",
-            "Sentret", "Furret", "Hoothoot", "Noctowl", "Ledyba", "Ledian", "Spinarak", "Ariados", "Crobat", "Chinchou", "Lanturn",
-            "Pichu", "Cleffa", "Igglybuff", "Togepi", "Togetic", "Natu", "Xatu", "Mareep", "Flaaffy", "Ampharos", "Bellossom",
-            "Marill", "Azumarill", "Sudowoodo", "Politoed", "Hoppip", "Skiploom", "Jumpluff", "Aipom", "Sunkern", "Sunflora",
-            "Yanma", "Wooper", "Quagsire", "Espeon", "Umbreon", "Murkrow", "Slowking", "Misdreavus", "Unown", "Wobbuffet",
-            "Girafarig", "Pineco", "Forretress", "Dunsparce", "Gligar", "Steelix", "Snubbull", "Granbull", "Qwilfish", "Scizor",
-            "Shuckle", "Heracross", "Sneasel", "Teddiursa", "Ursaring", "Slugma", "Magcargo", "Swinub", "Piloswine", "Corsola",
-            "Remoraid", "Octillery", "Delibird", "Mantine", "Skarmory", "Houndour", "Houndoom", "Kingdra", "Phanpy", "Donphan",
-            "Porygon2", "Stantler", "Smeargle", "Tyrogue", "Hitmontop", "Smoochum", "Elekid", "Magby", "Miltank", "Blissey",
-            "Raikou", "Entei", "Suicune", "Larvitar", "Pupitar", "Tyranitar", "Lugia", "Ho-Oh", "Celebi",
-            
-            // Generation 3 (252-386)
-            "Treecko", "Grovyle", "Sceptile", "Torchic", "Combusken", "Blaziken", "Mudkip", "Marshtomp", "Swampert",
-            "Poochyena", "Mightyena", "Zigzagoon", "Linoone", "Wurmple", "Silcoon", "Beautifly", "Cascoon", "Dustox", "Lotad",
-            "Lombre", "Ludicolo", "Seedot", "Nuzleaf", "Shiftry", "Taillow", "Swellow", "Wingull", "Pelipper", "Ralts", "Kirlia",
-            "Gardevoir", "Surskit", "Masquerain", "Shroomish", "Breloom", "Slakoth", "Vigoroth", "Slaking", "Nincada", "Ninjask",
-            "Shedinja", "Whismur", "Loudred", "Exploud", "Makuhita", "Hariyama", "Azurill", "Nosepass", "Skitty", "Delcatty",
-            "Sableye", "Mawile", "Aron", "Lairon", "Aggron", "Meditite", "Medicham", "Electrike", "Manectric", "Plusle", "Minun",
-            "Volbeat", "Illumise", "Roselia", "Gulpin", "Swalot", "Carvanha", "Sharpedo", "Wailmer", "Wailord", "Numel", "Camerupt",
-            "Torkoal", "Spoink", "Grumpig", "Spinda", "Trapinch", "Vibrava", "Flygon", "Cacnea", "Cacturne", "Swablu", "Altaria",
-            "Zangoose", "Seviper", "Lunatone", "Solrock", "Barboach", "Whiscash", "Corphish", "Crawdaunt", "Baltoy", "Claydol",
-            "Lileep", "Cradily", "Anorith", "Armaldo", "Feebas", "Milotic", "Castform", "Kecleon", "Shuppet", "Banette", "Duskull",
-            "Dusclops", "Tropius", "Chimecho", "Absol", "Wynaut", "Snorunt", "Glalie", "Spheal", "Sealeo", "Walrein", "Clamperl",
-            "Huntail", "Gorebyss", "Relicanth", "Luvdisc", "Bagon", "Shelgon", "Salamence", "Beldum", "Metang", "Metagross",
-            "Regirock", "Regice", "Registeel", "Latias", "Latios", "Kyogre", "Groudon", "Rayquaza", "Jirachi", "Deoxys",
-            
-            // Generation 4 (387-493)
-            "Turtwig", "Grotle", "Torterra", "Chimchar", "Monferno", "Infernape", "Piplup", "Prinplup", "Empoleon", "Starly",
-            "Staravia", "Staraptor", "Bidoof", "Bibarel", "Kricketot", "Kricketune", "Shinx", "Luxio", "Luxray", "Budew", "Roserade",
-            "Cranidos", "Rampardos", "Shieldon", "Bastiodon", "Burmy", "Wormadam", "Mothim", "Combee", "Vespiquen", "Pachirisu",
-            "Buizel", "Floatzel", "Cherubi", "Cherrim", "Shellos", "Gastrodon", "Ambipom", "Drifloon", "Drifblim", "Buneary",
-            "Lopunny", "Mismagius", "Honchkrow", "Glameow", "Purugly", "Chingling", "Stunky", "Skuntank", "Bronzor", "Bronzong",
-            "Bonsly", "Mime Jr.", "Happiny", "Chatot", "Spiritomb", "Gible", "Gabite", "Garchomp", "Munchlax", "Riolu", "Lucario",
-            "Hippopotas", "Hippowdon", "Skorupi", "Drapion", "Croagunk", "Toxicroak", "Carnivine", "Finneon", "Lumineon", "Mantyke",
-            "Snover", "Abomasnow", "Weavile", "Magnezone", "Lickilicky", "Rhyperior", "Tangrowth", "Electivire", "Magmortar",
-            "Togekiss", "Yanmega", "Leafeon", "Glaceon", "Gliscor", "Mamoswine", "Porygon-Z", "Gallade", "Probopass", "Dusknoir",
-            "Froslass", "Rotom", "Uxie", "Mesprit", "Azelf", "Dialga", "Palkia", "Heatran", "Regigigas", "Giratina", "Cresselia",
-            "Phione", "Manaphy", "Darkrai", "Shaymin", "Arceus",
-            
-            // Generation 5 (494-649)
-            "Victini", "Snivy", "Servine", "Serperior", "Tepig", "Pignite", "Emboar", "Oshawott", "Dewott", "Samurott", "Patrat",
-            "Watchog", "Lillipup", "Herdier", "Stoutland", "Purrloin", "Liepard", "Pansage", "Simisage", "Pansear", "Simisear",
-            "Panpour", "Simipour", "Munna", "Musharna", "Pidove", "Tranquill", "Unfezant", "Blitzle", "Zebstrika", "Roggenrola",
-            "Boldore", "Gigalith", "Woobat", "Swoobat", "Drilbur", "Excadrill", "Audino", "Timburr", "Gurdurr", "Conkeldurr",
-            "Tympole", "Palpitoad", "Seismitoad", "Throh", "Sawk", "Sewaddle", "Swadloon", "Leavanny", "Venipede", "Whirlipede",
-            "Scolipede", "Cottonee", "Whimsicott", "Petilil", "Lilligant", "Basculin", "Sandile", "Krokorok", "Krookodile",
-            "Darumaka", "Darmanitan", "Maractus", "Dwebble", "Crustle", "Scraggy", "Scrafty", "Sigilyph", "Yamask", "Cofagrigus",
-            "Tirtouga", "Carracosta", "Archen", "Archeops", "Trubbish", "Garbodor", "Zorua", "Zoroark", "Minccino", "Cinccino",
-            "Gothita", "Gothorita", "Gothitelle", "Solosis", "Duosion", "Reuniclus", "Ducklett", "Swanna", "Vanillite", "Vanillish",
-            "Vanilluxe", "Deerling", "Sawsbuck", "Emolga", "Karrablast", "Escavalier", "Foongus", "Amoonguss", "Frillish", "Jellicent",
-            "Alomomola", "Joltik", "Galvantula", "Ferroseed", "Ferrothorn", "Klink", "Klang", "Klinklang", "Tynamo", "Eelektrik",
-            "Eelektross", "Elgyem", "Beheeyem", "Litwick", "Lampent", "Chandelure", "Axew", "Fraxure", "Haxorus", "Cubchoo",
-            "Beartic", "Cryogonal", "Shelmet", "Accelgor", "Stunfisk", "Mienfoo", "Mienshao", "Druddigon", "Golett", "Golurk",
-            "Pawniard", "Bisharp", "Bouffalant", "Rufflet", "Braviary", "Vullaby", "Mandibuzz", "Heatmor", "Durant", "Deino",
-            "Zweilous", "Hydreigon", "Larvesta", "Volcarona", "Cobalion", "Terrakion", "Virizion", "Tornadus", "Thundurus",
-            "Reshiram", "Zekrom", "Landorus", "Kyurem", "Keldeo", "Meloetta", "Genesect",
-            
-            // Generation 6 (650-721)
-            "Chespin", "Quilladin", "Chesnaught", "Fennekin", "Braixen", "Delphox", "Froakie", "Frogadier", "Greninja", "Bunnelby",
-            "Diggersby", "Fletchling", "Fletchinder", "Talonflame", "Scatterbug", "Spewpa", "Vivillon", "Litleo", "Pyroar", "Flabébé",
-            "Floette", "Florges", "Skiddo", "Gogoat", "Pancham", "Pangoro", "Furfrou", "Espurr", "Meowstic", "Honedge", "Doublade",
-            "Aegislash", "Spritzee", "Aromatisse", "Swirlix", "Slurpuff", "Inkay", "Malamar", "Binacle", "Barbaracle", "Skrelp",
-            "Dragalge", "Clauncher", "Clawitzer", "Helioptile", "Heliolisk", "Tyrunt", "Tyrantrum", "Amaura", "Aurorus", "Sylveon",
-            "Hawlucha", "Dedenne", "Carbink", "Goomy", "Sliggoo", "Goodra", "Klefki", "Phantump", "Trevenant", "Pumpkaboo",
-            "Gourgeist", "Bergmite", "Avalugg", "Noibat", "Noivern", "Xerneas", "Yveltal", "Zygarde", "Diancie", "Hoopa", "Volcanion",
-            
-            // Generation 7 (722-809)
-            "Rowlet", "Dartrix", "Decidueye", "Litten", "Torracat", "Incineroar", "Popplio", "Brionne", "Primarina", "Pikipek",
-            "Trumbeak", "Toucannon", "Yungoos", "Gumshoos", "Grubbin", "Charjabug", "Vikavolt", "Crabrawler", "Crabominable",
-            "Oricorio", "Cutiefly", "Ribombee", "Rockruff", "Lycanroc", "Wishiwashi", "Mareanie", "Toxapex", "Mudbray", "Mudsdale",
-            "Dewpider", "Araquanid", "Fomantis", "Lurantis", "Morelull", "Shiinotic", "Salandit", "Salazzle", "Stufful", "Bewear",
-            "Bounsweet", "Steenee", "Tsareena", "Comfey", "Oranguru", "Passimian", "Wimpod", "Golisopod", "Sandygast", "Palossand",
-            "Pyukumuku", "Type: Null", "Silvally", "Minior", "Komala", "Turtonator", "Togedemaru", "Mimikyu", "Bruxish", "Drampa",
-            "Dhelmise", "Jangmo-o", "Hakamo-o", "Kommo-o", "Tapu Koko", "Tapu Lele", "Tapu Bulu", "Tapu Fini", "Cosmog", "Cosmoem",
-            "Solgaleo", "Lunala", "Nihilego", "Buzzwole", "Pheromosa", "Xurkitree", "Celesteela", "Kartana", "Guzzlord", "Necrozma",
-            "Magearna", "Marshadow", "Poipole", "Naganadel", "Stakataka", "Blacephalon", "Zeraora", "Meltan", "Melmetal",
-            
-            // Generation 8 (810-905)
-            "Grookey", "Thwackey", "Rillaboom", "Scorbunny", "Raboot", "Cinderace", "Sobble", "Drizzile", "Inteleon", "Skwovet",
-            "Greedent", "Rookidee", "Corvisquire", "Corviknight", "Blipbug", "Dottler", "Orbeetle", "Nickit", "Thievul", "Gossifleur",
-            "Eldegoss", "Wooloo", "Dubwool", "Chewtle", "Drednaw", "Yamper", "Boltund", "Rolycoly", "Carkol", "Coalossal", "Applin",
-            "Flapple", "Appletun", "Silicobra", "Sandaconda", "Cramorant", "Arrokuda", "Barraskewda", "Toxel", "Toxtricity", "Sizzlipede",
-            "Centiskorch", "Clobbopus", "Grapploct", "Sinistea", "Polteageist", "Hatenna", "Hattrem", "Hatterene", "Impidimp", "Morgrem",
-            "Grimmsnarl", "Obstagoon", "Perrserker", "Cursola", "Sirfetch'd", "Mr. Rime", "Runerigus", "Milcery", "Alcremie", "Falinks",
-            "Pincurchin", "Snom", "Frosmoth", "Stonjourner", "Eiscue", "Indeedee", "Morpeko", "Cufant", "Copperajah", "Dracozolt",
-            "Arctozolt", "Dracovish", "Arctovish", "Duraludon", "Dreepy", "Drakloak", "Dragapult", "Zacian", "Zamazenta", "Eternatus",
-            "Kubfu", "Urshifu", "Zarude", "Regieleki", "Regidrago", "Glastrier", "Spectrier", "Calyrex", "Wyrdeer", "Kleavor", "Ursaluna",
-            "Basculegion", "Sneasler", "Overqwil", "Enamorus",
-            
-            // Generation 9 (906-1025)
-            "Sprigatito", "Floragato", "Meowscarada", "Fuecoco", "Crocalor", "Skeledirge", "Quaxly", "Quaxwell", "Quaquaval",
-            "Lechonk", "Oinkologne", "Tarountula", "Spidops", "Nymble", "Lokix", "Pawmi", "Pawmo", "Pawmot", "Tandemaus", "Maushold",
-            "Fidough", "Dachsbun", "Smoliv", "Dolliv", "Arboliva", "Squawkabilly", "Nacli", "Naclstack", "Garganacl", "Charcadet",
-            "Armarouge", "Ceruledge", "Tadbulb", "Bellibolt", "Wattrel", "Kilowattrel", "Maschiff", "Mabosstiff", "Shroodle", "Grafaiai",
-            "Bramblin", "Brambleghast", "Toedscool", "Toedscruel", "Klawf", "Capsakid", "Scovillain", "Rellor", "Rabsca", "Flittle",
-            "Espathra", "Tinkatink", "Tinkatuff", "Tinkaton", "Wiglett", "Wugtrio", "Bombirdier", "Finizen", "Palafin", "Varoom",
-            "Revavroom", "Cyclizar", "Orthworm", "Glimmet", "Glimmora", "Greavard", "Houndstone", "Flamigo", "Cetoddle", "Cetitan",
-            "Veluza", "Dondozo", "Tatsugiri", "Annihilape", "Clodsire", "Farigiraf", "Dudunsparce", "Kingambit", "Great Tusk",
-            "Scream Tail", "Brute Bonnet", "Flutter Mane", "Slither Wing", "Sandy Shocks", "Iron Treads", "Iron Bundle", "Iron Hands",
-            "Iron Jugulis", "Iron Moth", "Iron Thorns", "Frigibax", "Arctibax", "Baxcalibur", "Gimmighoul", "Gholdengo", "Wo-Chien",
-            "Chien-Pao", "Ting-Lu", "Chi-Yu", "Roaring Moon", "Iron Valiant", "Koraidon", "Miraidon", "Walking Wake", "Iron Leaves",
-            "Dipplin", "Poltchageist", "Sinistcha", "Okidogi", "Munkidori", "Fezandipiti", "Ogerpon", "Archaludon", "Hydrapple",
-            "Gouging Fire", "Raging Bolt", "Iron Boulder", "Iron Crown", "Terapagos", "Pecharunt"
-        ];
+  <div class="toast" id="toast"></div>
 
-        // Game state
-        let currentPokemonIndex = 0;
-        let score = 0;
-        let streak = 0;
-        let difficulty = 5;
-        let unlockedPokemon = new Set([0]); // Start with only Bulbasaur unlocked
+  <main>
+    <div class="panel">
+      <div class="top">
+        <div class="grid">
+          <div>
+            <div class="label">Choose Pokémon (locked ones disabled)</div>
+            <select id="pokeSelect"></select>
+          </div>
 
-        // DOM elements
-        const pokemonImage = document.getElementById('pokemonImage');
-        const pokemonInput = document.getElementById('pokemonInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const feedback = document.getElementById('feedback');
-        const currentNumberSpan = document.getElementById('currentNumber');
-        const scoreSpan = document.getElementById('score');
-        const streakSpan = document.getElementById('streak');
-        const progressFill = document.getElementById('progressFill');
-        const difficultySlider = document.getElementById('difficultySlider');
-        const hintText = document.getElementById('hintText');
+          <div>
+            <div class="label">Difficulty (easy → hard)</div>
+            <input id="difficulty" type="range" min="0" max="100" value="35" />
+            <div class="small" id="difficultyLabel"></div>
+          </div>
 
-        // Bulbapedia image URL pattern
-        function getPokemonImageUrl(pokemonName) {
-            const formattedName = pokemonName.replace(/[:\s]/g, '_');
-            // Using the official Bulbapedia image URL pattern
-            return `https://archives.bulbagarden.net/media/upload/thumb/0/0f/${formattedName}_art.png/200px-${formattedName}_art.png`;
+          <div class="progress">
+            <div>Filled: <strong id="filled">0</strong> / <strong id="total">0</strong></div>
+            <div>Correct: <strong id="correct">0</strong></div>
+            <div>Completion: <strong id="pct">0%</strong></div>
+          </div>
+
+          <div class="small">
+            Tip: Tap a color number below, then tap the canvas to fill tiles.
+            Pinch-zoom in Safari if you want more precision.
+          </div>
+        </div>
+      </div>
+
+      <div class="canvasWrap">
+        <canvas id="game" width="520" height="520"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <div class="bottomBar">
+    <div class="palette" id="palette"></div>
+    <div class="row">
+      <button id="btnHint">Auto-fill correct tiles for selected color</button>
+      <button id="btnFinish">Finish (validate & unlock next)</button>
+    </div>
+    <div class="small">
+      Image source default: PokeAPI official artwork. To use Bulbapedia images, host them yourself and edit <code>getImageUrl()</code>.
+    </div>
+  </div>
+
+<script>
+(() => {
+  const MAX_ID = 1025;
+
+  // --- Storage keys ---
+  const KEY_UNLOCKED = "pbn_unlocked_max";        // highest unlocked id
+  const KEY_STATE_PREFIX = "pbn_state_";          // per-id state
+  const KEY_DIFF = "pbn_difficulty";              // last diff
+
+  // --- UI elements ---
+  const elTitle = document.getElementById("pokeTitle");
+  const elMeta = document.getElementById("pokeMeta");
+  const elUnlockMeta = document.getElementById("unlockMeta");
+  const elSelect = document.getElementById("pokeSelect");
+  const elDiff = document.getElementById("difficulty");
+  const elDiffLabel = document.getElementById("difficultyLabel");
+
+  const elFilled = document.getElementById("filled");
+  const elTotal = document.getElementById("total");
+  const elCorrect = document.getElementById("correct");
+  const elPct = document.getElementById("pct");
+
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const btnReset = document.getElementById("btnReset");
+  const btnHint = document.getElementById("btnHint");
+  const btnFinish = document.getElementById("btnFinish");
+
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d", { alpha: false });
+  const elPalette = document.getElementById("palette");
+  const toast = document.getElementById("toast");
+
+  // --- Game state ---
+  let unlockedMax = clampInt(loadInt(KEY_UNLOCKED, 1), 1, MAX_ID);
+  let currentId = 1;
+  let pokemonNames = Array(MAX_ID + 1).fill(null);
+
+  // Grid/puzzle
+  let gridN = 18;                 // number of cells per side
+  let cellSize = 0;               // pixels
+  let targetIndex = [];           // length N*N, paletteIndex for each cell
+  let filledIndex = [];           // length N*N, -1 or paletteIndex
+  let palette = [];               // array of {r,g,b, hex}
+  let counts = [];                // how many tiles per palette index
+  let selectedPalette = 0;
+  let imgLoaded = false;
+
+  // --- Helpers ---
+  function clampInt(v, a, b){ v = v|0; return Math.max(a, Math.min(b, v)); }
+  function loadInt(k, d){ const v = localStorage.getItem(k); return v === null ? d : parseInt(v, 10); }
+  function saveInt(k, v){ localStorage.setItem(k, String(v)); }
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.style.display = "block";
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.style.display = "none", 1800);
+  }
+
+  function pad3(n){ return String(n).padStart(3, "0"); }
+
+  // Difficulty -> grid size & palette size
+  function computeDifficulty(d01){
+    // d01: 0..1
+    // Easy: fewer cells, fewer colors. Hard: more cells, more colors.
+    const n = Math.round(14 + d01 * 22);          // 14..36
+    const k = Math.round(10 + d01 * 22);          // 10..32 colors
+    return { n, k };
+  }
+
+  // --- Image URL source ---
+  function getImageUrl(id){
+    // Default: PokeAPI official artwork (reliable for canvas + CORS)
+    // Example: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
+    // If you want Bulbapedia: host images yourself and return your hosted URL here.
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+
+    // Example if self-hosting Bulbapedia downloads:
+    // return `https://yourdomain.com/pokemon/${id}.png`;
+  }
+
+  // --- Quantization (simple k-means) ---
+  function rgbToHex(r,g,b){
+    return "#" + [r,g,b].map(x => x.toString(16).padStart(2,"0")).join("");
+  }
+
+  function dist2(a,b){
+    const dr=a.r-b.r, dg=a.g-b.g, db=a.b-b.b;
+    return dr*dr + dg*dg + db*db;
+  }
+
+  function kmeans(pixels, k, iters=8){
+    // pixels: array of {r,g,b}
+    // init: sample evenly
+    const centers = [];
+    const step = Math.max(1, Math.floor(pixels.length / k));
+    for(let i=0;i<k;i++){
+      const p = pixels[(i*step) % pixels.length];
+      centers.push({r:p.r, g:p.g, b:p.b});
+    }
+    const assign = new Array(pixels.length).fill(0);
+
+    for(let t=0;t<iters;t++){
+      // assign
+      for(let i=0;i<pixels.length;i++){
+        let best = 0, bestD = Infinity;
+        for(let c=0;c<centers.length;c++){
+          const d = dist2(pixels[i], centers[c]);
+          if(d < bestD){ bestD = d; best = c; }
+        }
+        assign[i] = best;
+      }
+      // update
+      const sum = centers.map(_ => ({r:0,g:0,b:0,n:0}));
+      for(let i=0;i<pixels.length;i++){
+        const a = assign[i];
+        const p = pixels[i];
+        sum[a].r += p.r; sum[a].g += p.g; sum[a].b += p.b; sum[a].n++;
+      }
+      for(let c=0;c<centers.length;c++){
+        if(sum[c].n > 0){
+          centers[c] = {
+            r: Math.round(sum[c].r / sum[c].n),
+            g: Math.round(sum[c].g / sum[c].n),
+            b: Math.round(sum[c].b / sum[c].n),
+          };
+        }
+      }
+    }
+
+    // de-duplicate near-equal colors
+    const uniq = [];
+    for(const c of centers){
+      if(!uniq.some(u => dist2(u,c) < 60)) uniq.push(c);
+    }
+    return uniq;
+  }
+
+  function nearestPaletteIndex(p, pal){
+    let best = 0, bestD = Infinity;
+    for(let i=0;i<pal.length;i++){
+      const d = dist2(p, pal[i]);
+      if(d < bestD){ bestD = d; best = i; }
+    }
+    return best;
+  }
+
+  // --- Build puzzle from image ---
+  async function buildPuzzle(id){
+    imgLoaded = false;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    elPalette.innerHTML = "";
+    elTitle.textContent = `#${pad3(id)} Loading…`;
+    elMeta.textContent = "";
+    updateUnlockUI();
+
+    const d01 = (parseInt(elDiff.value,10) / 100);
+    const { n, k } = computeDifficulty(d01);
+    gridN = n;
+    const paletteK = k;
+
+    elDiffLabel.textContent = `Grid: ${gridN}×${gridN} • Colors: ~${paletteK} • Harder = more tiny tiles`;
+
+    // Load image
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = getImageUrl(id);
+
+    await new Promise((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("Image failed to load (CORS or URL issue)."));
+    }).catch(err => {
+      showToast("Couldn’t load image. If using Bulbapedia, host images yourself.");
+      throw err;
+    });
+
+    // Draw scaled into an offscreen canvas for sampling
+    const off = document.createElement("canvas");
+    off.width = gridN; off.height = gridN;
+    const octx = off.getContext("2d");
+    octx.clearRect(0,0,gridN,gridN);
+    octx.drawImage(img, 0, 0, gridN, gridN);
+
+    const data = octx.getImageData(0,0,gridN,gridN).data;
+
+    // Collect pixels (ignore near-transparent)
+    const pixels = [];
+    for(let i=0;i<data.length;i+=4){
+      const a = data[i+3];
+      if(a < 15) continue;
+      pixels.push({r:data[i], g:data[i+1], b:data[i+2]});
+    }
+    if(pixels.length < 10){
+      showToast("Image sample too small/empty.");
+      return;
+    }
+
+    // Quantize palette
+    let pal = kmeans(pixels, paletteK, 7);
+    pal = pal.slice(0, Math.min(pal.length, 32)); // cap for UI sanity
+    palette = pal.map(c => ({...c, hex: rgbToHex(c.r,c.g,c.b)}));
+
+    // Build target index for each cell
+    targetIndex = new Array(gridN*gridN).fill(0);
+    counts = new Array(palette.length).fill(0);
+
+    for(let y=0;y<gridN;y++){
+      for(let x=0;x<gridN;x++){
+        const i = (y*gridN + x);
+        const j = i*4;
+        const p = {r:data[j], g:data[j+1], b:data[j+2]};
+        const idx = nearestPaletteIndex(p, palette);
+        targetIndex[i] = idx;
+        counts[idx]++;
+      }
+    }
+
+    // Setup filled
+    const saved = loadState(id);
+    if(saved && saved.gridN === gridN && saved.paletteHash === paletteHash(palette)){
+      filledIndex = saved.filledIndex.slice(0, gridN*gridN);
+      selectedPalette = clampInt(saved.selectedPalette ?? 0, 0, palette.length-1);
+      showToast("Loaded saved puzzle.");
+    } else {
+      filledIndex = new Array(gridN*gridN).fill(-1);
+      selectedPalette = 0;
+    }
+
+    // Canvas cell size
+    cellSize = Math.floor(canvas.width / gridN);
+
+    // Update title/meta (name if available)
+    const name = pokemonNames[id] ? capitalize(pokemonNames[id]) : `Pokémon ${id}`;
+    elTitle.textContent = `#${pad3(id)} ${name}`;
+    elMeta.textContent = `Difficulty: ${Math.round(d01*100)}%`;
+    imgLoaded = true;
+
+    renderPalette();
+    draw();
+    updateStats();
+    saveState(id);
+  }
+
+  function paletteHash(pal){
+    // small stable signature
+    return pal.map(c => c.hex).join("|");
+  }
+
+  function capitalize(s){ return s ? s[0].toUpperCase()+s.slice(1) : s; }
+
+  // --- Rendering ---
+  function draw(){
+    if(!imgLoaded) return;
+    // background
+    ctx.fillStyle = "#0f1117";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // draw cells
+    for(let y=0;y<gridN;y++){
+      for(let x=0;x<gridN;x++){
+        const i = y*gridN + x;
+        const filled = filledIndex[i];
+        const tx = x*cellSize, ty = y*cellSize;
+
+        if(filled === -1){
+          // unfilled: show number
+          ctx.fillStyle = "#121621";
+          ctx.fillRect(tx,ty,cellSize,cellSize);
+
+          ctx.fillStyle = "rgba(255,255,255,.72)";
+          ctx.font = `${Math.max(10, Math.floor(cellSize*0.46))}px -apple-system, system-ui, Arial`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(String(targetIndex[i]+1), tx + cellSize/2, ty + cellSize/2);
+        } else {
+          // filled: show color
+          const c = palette[filled];
+          ctx.fillStyle = c.hex;
+          ctx.fillRect(tx,ty,cellSize,cellSize);
         }
 
-        // Apply difficulty filter to image
-        function applyDifficultyFilter(level) {
-            const blurAmount = (11 - level) * 0.5; // Inverse relationship
-            const brightness = 0.3 + (level * 0.07); // Brighter at higher difficulty
-            
-            pokemonImage.style.filter = `blur(${blurAmount}px) brightness(${brightness})`;
-        }
+        // grid line
+        ctx.strokeStyle = "rgba(0,0,0,.35)";
+        ctx.strokeRect(tx,ty,cellSize,cellSize);
+      }
+    }
 
-        // Get hint for current Pokemon
-        function getHint() {
-            const pokemon = pokemonData[currentPokemonIndex];
-            const hints = [
-                `This Pokemon's name starts with "${pokemon[0]}" and has ${pokemon.length} letters.`,
-                `This Pokemon's name ends with "${pokemon[pokemon.length - 1]}".`,
-                `This Pokemon is number ${currentPokemonIndex + 1} in the Pokedex.`,
-                `This Pokemon's name contains ${pokemon.replace(/[^aeiou]/gi, '').length} vowels.`
-            ];
-            
-            return hints[Math.floor(Math.random() * hints.length)];
-        }
+    // border
+    ctx.strokeStyle = "rgba(255,255,255,.08)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1,1,canvas.width-2,canvas.height-2);
+  }
 
-        // Load new Pokemon
-        function loadPokemon() {
-            if (currentPokemonIndex >= pokemonData.length) {
-                showFeedback('🎉 Congratulations! You\'ve completed all 1025 Pokemon! 🎉', 'correct');
-                return;
-            }
+  function renderPalette(){
+    elPalette.innerHTML = "";
+    palette.forEach((c, idx) => {
+      const div = document.createElement("div");
+      div.className = "swatch" + (idx === selectedPalette ? " selected" : "");
+      div.innerHTML = `
+        <div class="chip" style="background:${c.hex}"></div>
+        <div class="num">${idx+1}</div>
+        <div class="count">${counts[idx]} tiles</div>
+      `;
+      div.addEventListener("click", () => {
+        selectedPalette = idx;
+        renderPalette();
+        saveState(currentId);
+      });
+      elPalette.appendChild(div);
+    });
+  }
 
-            const pokemon = pokemonData[currentPokemonIndex];
-            pokemonImage.src = getPokemonImageUrl(pokemon);
-            pokemonImage.alt = pokemon;
-            
-            applyDifficultyFilter(difficulty);
-            
-            currentNumberSpan.textContent = currentPokemonIndex + 1;
-            progressFill.style.width = `${(currentPokemonIndex / pokemonData.length) * 100}%`;
-            
-            pokemonInput.value = '';
-            pokemonInput.focus();
-            hintText.textContent = '';
-            feedback.textContent = '';
-            feedback.className = 'feedback';
-        }
+  function updateStats(){
+    const total = gridN*gridN;
+    let filled = 0, correct = 0;
+    for(let i=0;i<total;i++){
+      if(filledIndex[i] !== -1){
+        filled++;
+        if(filledIndex[i] === targetIndex[i]) correct++;
+      }
+    }
+    elFilled.textContent = String(filled);
+    elTotal.textContent = String(total);
+    elCorrect.textContent = String(correct);
+    elPct.textContent = `${Math.round((correct/total)*100)}%`;
+  }
 
-        // Show feedback
-        function showFeedback(message, type) {
-            feedback.textContent = message;
-            feedback.className = `feedback ${type}`;
-        }
+  // --- Input handling (tap/click) ---
+  function posToCell(clientX, clientY){
+    const rect = canvas.getBoundingClientRect();
+    const x = (clientX - rect.left) * (canvas.width / rect.width);
+    const y = (clientY - rect.top) * (canvas.height / rect.height);
+    const cx = clampInt(Math.floor(x / cellSize), 0, gridN-1);
+    const cy = clampInt(Math.floor(y / cellSize), 0, gridN-1);
+    return cy*gridN + cx;
+  }
 
-        // Check answer
-        function checkAnswer() {
-            const userAnswer = pokemonInput.value.trim().toLowerCase();
-            const correctAnswer = pokemonData[currentPokemonIndex].toLowerCase();
-            
-            if (userAnswer === correctAnswer) {
-                score++;
-                streak++;
-                unlockedPokemon.add(currentPokemonIndex + 1); // Unlock next Pokemon
-                showFeedback(`✅ Correct! It's ${pokemonData[currentPokemonIndex]}!`, 'correct');
-                
-                setTimeout(() => {
-                    currentPokemonIndex++;
-                    loadPokemon();
-                }, 2000);
-            } else {
-                streak = 0;
-                showFeedback(`❌ Wrong! It's ${pokemonData[currentPokemonIndex]}. Try again!`, 'incorrect');
-            }
-            
-            scoreSpan.textContent = score;
-            streakSpan.textContent = streak;
-        }
+  function paintCell(i){
+    if(!imgLoaded) return;
+    filledIndex[i] = selectedPalette;
+    draw();
+    updateStats();
+    saveState(currentId);
+  }
 
-        // Skip current Pokemon
-        function skipPokemon() {
-            currentPokemonIndex++;
-            streak = 0;
-            streakSpan.textContent = streak;
-            loadPokemon();
-        }
+  canvas.addEventListener("pointerdown", (e) => {
+    canvas.setPointerCapture(e.pointerId);
+    paintCell(posToCell(e.clientX, e.clientY));
+  });
 
-        // Show hint
-        function showHint() {
-            hintText.textContent = getHint();
-            showFeedback('💡 Hint revealed!', 'hint');
-        }
+  canvas.addEventListener("pointermove", (e) => {
+    if(e.buttons !== 1) return;
+    paintCell(posToCell(e.clientX, e.clientY));
+  });
 
-        // Reset game
-        function resetGame() {
-            if (confirm('Are you sure you want to reset your progress?')) {
-                currentPokemonIndex = 0;
-                score = 0;
-                streak = 0;
-                unlockedPokemon = new Set([0]);
-                
-                scoreSpan.textContent = score;
-                streakSpan.textContent = streak;
-                loadPokemon();
-            }
-        }
+  // --- Unlock / progression ---
+  function updateUnlockUI(){
+    elUnlockMeta.textContent = `${unlockedMax} / ${MAX_ID}`;
+    btnPrev.disabled = (currentId <= 1);
+    btnNext.disabled = (currentId >= unlockedMax);
+  }
 
-        // Event listeners
-        submitBtn.addEventListener('click', checkAnswer);
-        pokemonInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
+  function setCurrent(id){
+    currentId = clampInt(id, 1, MAX_ID);
+    elSelect.value = String(currentId);
+    updateUnlockUI();
+    buildPuzzle(currentId).catch(()=>{});
+  }
 
-        document.getElementById('skipBtn').addEventListener('click', skipPokemon);
-        document.getElementById('hintBtn').addEventListener('click', showHint);
-        document.getElementById('resetBtn').addEventListener('click', resetGame);
+  function unlockNextIfPossible(){
+    // Only unlock if fully correct
+    const total = gridN*gridN;
+    for(let i=0;i<total;i++){
+      if(filledIndex[i] !== targetIndex[i]) return false;
+    }
+    if(currentId < MAX_ID && unlockedMax < currentId+1){
+      unlockedMax = currentId+1;
+      saveInt(KEY_UNLOCKED, unlockedMax);
+      rebuildSelectOptions();
+      updateUnlockUI();
+      showToast(`Unlocked #${pad3(unlockedMax)}!`);
+    }
+    return true;
+  }
 
-        difficultySlider.addEventListener('input', (e) => {
-            difficulty = parseInt(e.target.value);
-            applyDifficultyFilter(difficulty);
-        });
+  // --- State save/load per Pokémon ---
+  function saveState(id){
+    const state = {
+      id,
+      gridN,
+      paletteHash: paletteHash(palette),
+      filledIndex,
+      selectedPalette,
+      diff: parseInt(elDiff.value,10)
+    };
+    localStorage.setItem(KEY_STATE_PREFIX + id, JSON.stringify(state));
+  }
 
-        // Initialize game
-        loadPokemon();
-    </script>
+  function loadState(id){
+    const raw = localStorage.getItem(KEY_STATE_PREFIX + id);
+    if(!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+
+  function clearState(id){
+    localStorage.removeItem(KEY_STATE_PREFIX + id);
+  }
+
+  // --- Controls ---
+  btnPrev.addEventListener("click", () => setCurrent(currentId - 1));
+  btnNext.addEventListener("click", () => setCurrent(currentId + 1));
+
+  btnReset.addEventListener("click", () => {
+    clearState(currentId);
+    buildPuzzle(currentId).catch(()=>{});
+    showToast("Puzzle reset.");
+  });
+
+  btnHint.addEventListener("click", () => {
+    // auto-fill only the tiles that match selected color
+    const total = gridN*gridN;
+    let n = 0;
+    for(let i=0;i<total;i++){
+      if(targetIndex[i] === selectedPalette && filledIndex[i] !== selectedPalette){
+        filledIndex[i] = selectedPalette;
+        n++;
+      }
+    }
+    draw(); updateStats(); saveState(currentId);
+    showToast(`Auto-filled ${n} tiles for #${selectedPalette+1}.`);
+  });
+
+  btnFinish.addEventListener("click", () => {
+    updateStats();
+    const ok = unlockNextIfPossible();
+    if(ok){
+      showToast("Perfect! ✅");
+      if(currentId < unlockedMax) btnNext.disabled = false;
+    } else {
+      showToast("Not complete yet — some tiles are wrong/unfilled.");
+    }
+  });
+
+  elDiff.addEventListener("input", () => {
+    saveInt(KEY_DIFF, parseInt(elDiff.value,10));
+    // Rebuild puzzle at new difficulty
+    clearState(currentId); // optional: force fresh puzzle at new grid size
+    buildPuzzle(currentId).catch(()=>{});
+  });
+
+  elSelect.addEventListener("change", () => setCurrent(parseInt(elSelect.value,10)));
+
+  // --- Pokémon list (names) ---
+  async function loadPokemonNames(){
+    // Pull 1025 names from PokeAPI
+    // This keeps the file small, and you don’t have to hardcode 1025 entries.
+    const url = `https://pokeapi.co/api/v2/pokemon?limit=${MAX_ID}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("Failed to fetch pokemon list");
+    const json = await res.json();
+    // json.results is ordered starting at 1 for this endpoint
+    for(let i=0;i<json.results.length;i++){
+      pokemonNames[i+1] = json.results[i].name;
+    }
+  }
+
+  function rebuildSelectOptions(){
+    elSelect.innerHTML = "";
+    for(let id=1; id<=MAX_ID; id++){
+      const opt = document.createElement("option");
+      const name = pokemonNames[id] ? capitalize(pokemonNames[id]) : `Pokémon ${id}`;
+      opt.value = String(id);
+      opt.textContent = `#${pad3(id)} ${name}` + (id <= unlockedMax ? "" : " 🔒");
+      opt.disabled = (id > unlockedMax);
+      elSelect.appendChild(opt);
+    }
+  }
+
+  // --- Boot ---
+  async function init(){
+    // Restore difficulty
+    const savedDiff = loadInt(KEY_DIFF, 35);
+    elDiff.value = String(clampInt(savedDiff, 0, 100));
+
+    try {
+      await loadPokemonNames();
+    } catch {
+      // If offline, still usable with numeric IDs
+      showToast("Offline mode: names not loaded.");
+    }
+
+    rebuildSelectOptions();
+
+    // Start at last played unlocked, if possible
+    // Find the highest id with a saved state
+    let start = 1;
+    for(let id=unlockedMax; id>=1; id--){
+      if(localStorage.getItem(KEY_STATE_PREFIX + id)) { start = id; break; }
+    }
+    setCurrent(start);
+  }
+
+  init();
+})();
+</script>
 </body>
 </html>
